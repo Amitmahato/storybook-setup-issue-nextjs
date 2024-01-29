@@ -14,7 +14,7 @@ type Story = StoryObj<typeof meta>;
 
 export const WithElectricColumnHidden: Story = {
   args: {
-    hiddenColumns: ["electric"],
+    hiddenColumns: ["title"],
   },
 };
 

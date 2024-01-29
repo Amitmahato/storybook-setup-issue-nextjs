@@ -4,52 +4,27 @@ import { AgGridReact } from "ag-grid-react"; // React Grid Logic
 import "ag-grid-community/styles/ag-grid.css"; // Core CSS
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Theme
 import { FC, useState } from "react";
-import { ColDef, ICellRendererParams } from "ag-grid-community";
+import { ColDef } from "ag-grid-community";
+import * as moment from "moment";
 
-type Data = {
-  make: string;
-  model: string;
-  price: number;
-  electric: boolean;
-};
+export interface SomeInterface {
+  title: string;
+  createdAt: moment.Moment;
+}
 
 export const GridExample: FC<{
   editable?: boolean;
-  hiddenColumns?: (keyof Data)[];
+  hiddenColumns?: (keyof SomeInterface)[];
 }> = ({ editable = false, hiddenColumns = [] }) => {
-  // Row Data: The data to be displayed.
-  const [rowData, setRowData] = useState<Data[]>([
-    { make: "Tesla", model: "Model Y", price: 64950, electric: true },
-    { make: "Ford", model: "F-Series", price: 33850, electric: false },
-    { make: "Toyota", model: "Corolla", price: 29600, electric: false },
-    { make: "Honda", model: "Accord", price: 29850, electric: true },
-    { make: "Tesla", model: "Model 3", price: 39950, electric: true },
-    { make: "Nissan", model: "Altima", price: 31950, electric: true },
-    { make: "Ford", model: "F-Series", price: 33850, electric: false },
-    { make: "Toyota", model: "Corolla", price: 29600, electric: false },
-    { make: "Honda", model: "Accord", price: 29850, electric: true },
-    { make: "Tesla", model: "Model 3", price: 39950, electric: true },
-  ]);
+  const [rowData] = useState<SomeInterface[]>([]);
 
   // Column Definitions: Defines & controls grid columns.
-  const colDefs: ColDef<Data>[] = [
-    { field: "make" },
-    { field: "model" },
-    {
-      field: "price",
-      cellRenderer: ({ value }: ICellRendererParams) =>
-        `$${Number(value)?.toLocaleString()}`,
-    },
-    {
-      field: "electric",
+  const colDefs: ColDef<SomeInterface>[] = [{ field: "createdAt" }].map(
+    (col) => ({
+      ...col,
       editable: editable,
-    },
-  ].map(
-    (colDef) =>
-      ({
-        ...colDef,
-        hide: hiddenColumns.includes(colDef.field as keyof Data),
-      } as ColDef<Data>)
+      hide: hiddenColumns.includes(col.field as keyof SomeInterface),
+    })
   );
 
   return (
