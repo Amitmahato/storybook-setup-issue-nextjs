@@ -12,7 +12,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const WithElectricColumnHidden: Story = {
+export const WithTitleColumnHidden: Story = {
   args: {
     hiddenColumns: ["title"],
   },
